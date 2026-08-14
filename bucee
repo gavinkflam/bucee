@@ -1,0 +1,42 @@
+#!/bin/bash
+set -Eeuo pipefail
+
+GID=$(id -g)
+VERSION="1.0.0"
+
+COMMAND="$1"
+
+case "$COMMAND" in
+build)
+  podman build -t localhost/bucee:$VERSION \
+    --build-arg=USER=$USER \
+    --build-arg=UID=$UID \
+    --build-arg=GID=$GID \
+    -f Containerfile
+  ;;
+
+go)
+  podman rm -f bucee
+
+  podman run -d \
+    --name bucee \
+    --hostname bucee \
+    --restart=always \
+    --tz=local \
+    --user $UID:$GID \
+    --userns=keep-id:uid=$UID,gid=$GID \
+    -v $HOME/.ssh:/home/$USER/.ssh:z \
+    -v $HOME/.gitconfig:/home/$USER/.gitconfig:z \
+    -v $HOME/repos:/home/$USER/repos:z \
+    localhost/bucee:$VERSION
+  ;;
+
+shell)
+  podman exec -ti bucee /bin/fish
+  ;;
+
+*)
+  echo -e "Bucee: unknown command $1"
+  ;;
+
+esac
