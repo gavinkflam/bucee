@@ -8,7 +8,7 @@ RUN \
   # Update and install packages
   yes '' | pacman -Syu \
     # Essential packages
-    bash curl devtools git less make man-db man-pages tar wget \
+    bash curl devtools git less make man-db man-pages tar unzip wget zip \
     # Productivity tools
     fish jq neovim tmux vi \
     # Containerization
