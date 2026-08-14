@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 GID=$(id -g)
-VERSION="1.0.0"
+VERSION="dev"
 
 COMMAND="$1"
 
@@ -18,6 +18,9 @@ build)
 go)
   podman rm -f bucee
 
+  # --user, --userns: Align host and container user 
+  # -v $HOME/xxx: Share some of the user home directories
+  # podman.sock: Allow container to use rootless podman of the host via Unix socket
   podman run -d \
     --name bucee \
     --hostname bucee \
@@ -25,9 +28,13 @@ go)
     --tz=local \
     --user $UID:$GID \
     --userns=keep-id:uid=$UID,gid=$GID \
-    -v $HOME/.ssh:/home/$USER/.ssh:z \
-    -v $HOME/.gitconfig:/home/$USER/.gitconfig:z \
-    -v $HOME/repos:/home/$USER/repos:z \
+    -v $HOME/.gitconfig:/home/$USER/.gitconfig \
+    -v $HOME/.ssh:/home/$USER/.ssh \
+    -v $HOME/repos:/home/$USER/repos \
+    -v $XDG_RUNTIME_DIR/podman/podman.sock:/run/user/$UID/podman/podman.sock \
+    -e DOCKER=podman \
+    -e CONTAINER_HOST=unix:///run/user/$UID/podman/podman.sock \
+    --security-opt label=disable \
     localhost/bucee:$VERSION
   ;;
 
