@@ -4,6 +4,7 @@ set -Eeuo pipefail
 GID=$(id -g)
 VERSION="dev"
 
+BUCEE_HOME=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")
 COMMAND="$1"
 
 case "$COMMAND" in
@@ -12,7 +13,7 @@ build)
     --build-arg=USER=$USER \
     --build-arg=UID=$UID \
     --build-arg=GID=$GID \
-    -f Containerfile
+    -f $BUCEE_HOME/Containerfile
   ;;
 
 go)
