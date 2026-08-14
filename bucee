@@ -43,6 +43,10 @@ shell)
   podman exec -ti bucee /bin/fish
   ;;
 
+rootshell)
+  podman exec -ti -u root bucee /bin/fish
+  ;;
+
 *)
   echo -e "Bucee: unknown command $1"
   ;;
