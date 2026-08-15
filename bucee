@@ -20,6 +20,8 @@ go)
   podman rm -f bucee
 
   # --user, --userns: Align host and container user 
+  # --network=host: Use the host's network namespace to simplify container to host and
+  # container to container traffic
   # -v bucee_home:/home/$USER: Persist user home in a named volume
   # -v $HOME/xxx: Share some of the user home directories
   # podman.sock: Allow container to use rootless podman of the host via Unix socket
@@ -30,6 +32,7 @@ go)
     --tz=local \
     --user $UID:$GID \
     --userns=keep-id:uid=$UID,gid=$GID \
+    --network=host \
     -v bucee_home:/home/$USER \
     -v $HOME/.gitconfig:/home/$USER/.gitconfig \
     -v $HOME/.ssh:/home/$USER/.ssh \
