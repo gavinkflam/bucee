@@ -8,11 +8,11 @@ RUN \
   # Update and install packages
   yes '' | pacman -Syu \
     # Essential packages
-    bash curl devtools git less make man-db man-pages tar unzip wget zip \
+    bash bind curl devtools git less make man-db man-pages tar unzip wget zip \
     # Productivity tools
     fish jq neovim tmux vi \
     # Containerization
-    kubectl podman \
+    docker docker-buildx kubectl podman \
     # Languages
     go python shellcheck && \
   yes | pacman -Scc && \
