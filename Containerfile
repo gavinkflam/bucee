@@ -14,7 +14,7 @@ RUN \
     # Containerization
     docker docker-buildx kubectl podman \
     # Languages
-    go python shellcheck && \
+    go python python-pip shellcheck && \
   yes | pacman -Scc && \
   # Set up user and group inside the container
   groupadd --gid $GID $USER && \
