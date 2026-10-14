@@ -44,16 +44,31 @@ go)
     localhost/bucee:$VERSION
   ;;
 
-shell)
-  podman exec -ti bucee /bin/fish
-  ;;
-
 rootshell)
   podman exec -ti -u root bucee /bin/fish
   ;;
 
-*)
-  echo -e "Bucee: unknown command $1"
+shell)
+  podman exec -ti bucee /bin/fish
   ;;
+
+help)
+  cat <<EOF
+bucee - can you smell what the beaver is cooking?
+
+Usage:
+  bucee [command]
+
+Available commands:
+  build       Build the bucee container image from the Containerfile
+  go          Run a bucee container in the background
+  rootshell   Attach a shell as root to the running bucee container
+  shell       Attach a shell as the unprivileged user to the running bucee container
+  help        Help for bucee
+EOF
+  ;;
+
+*)
+  echo -e "bucee: unknown command $COMMAND"
 
 esac
