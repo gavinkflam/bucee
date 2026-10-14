@@ -1,4 +1,4 @@
-FROM archlinux:base-devel-20260809.0.570793
+FROM archlinux:base-devel-20261011.0.609700
 
 ARG USER=dev
 ARG UID=1000
